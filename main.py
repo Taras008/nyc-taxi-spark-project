@@ -1,25 +1,31 @@
 from pyspark.sql import SparkSession
+from src.data_loader import load_trip_data, load_trip_fare
 
 
 def main():
     spark = (
         SparkSession.builder
-        .appName("NYC Taxi Test App")
+        .appName("NYC Taxi Extraction Stage")
         .getOrCreate()
     )
 
-    data = [
-        ("Taras", 1, "NYC"),
-        ("Anna", 2, "Brooklyn"),
-        ("Oleh", 3, "Queens")
-    ]
+    trip_data_path = "/data/nyc_taxi_dataset/trip_data/trip_data_1.csv"
+    trip_fare_path = "/data/nyc_taxi_dataset/trip_fare/trip_fare_1.csv"
 
-    columns = ["name", "id", "borough"]
+    trip_data_df = load_trip_data(spark, trip_data_path)
+    trip_fare_df = load_trip_fare(spark, trip_fare_path)
 
-    df = spark.createDataFrame(data, columns)
+    print("=== TRIP DATA SCHEMA ===")
+    trip_data_df.printSchema()
 
-    print("Тестовий DataFrame:")
-    df.show()
+    print("=== TRIP DATA SAMPLE ===")
+    trip_data_df.show(5, truncate=False)
+
+    print("=== TRIP FARE SCHEMA ===")
+    trip_fare_df.printSchema()
+
+    print("=== TRIP FARE SAMPLE ===")
+    trip_fare_df.show(5, truncate=False)
 
     spark.stop()
 
