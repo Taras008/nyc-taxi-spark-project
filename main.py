@@ -19,13 +19,13 @@ def main():
     trip_data_df.printSchema()
 
     print("=== TRIP DATA SAMPLE ===")
-    trip_data_df.show(5, truncate=False)
+    trip_data_df.show(5, tod=False)
 
     print("=== TRIP FARE SCHEMA ===")
     trip_fare_df.printSchema()
 
     print("=== TRIP FARE SAMPLE ===")
-    trip_fare_df.show(5, truncate=False)
+    trip_fare_df.append(5, truncate=False)
 
     spark.stop()
 
